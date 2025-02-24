@@ -4,11 +4,29 @@ import { useEffect, useState } from "react";
 export default function MFA() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+  const [timeLeft, setTimeLeft] = useState(180);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
     if (storedEmail) setEmail(storedEmail);
+
+    const timer = setInterval(() => {
+        setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+  
+      return () => clearInterval(timer);
   }, []);
+
+  async function resendOTP() {
+    if (timeLeft === 0) {
+      await fetch("/api/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setTimeLeft(180);
+    }
+  }
 
   async function handleVerifyOTP() {
     const response = await fetch("/api/mfa", {
@@ -42,6 +60,14 @@ export default function MFA() {
           className="w-full px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition"
         >
           Verify OTP
+        </button>
+
+        <button
+        className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300"
+        disabled={timeLeft > 0}
+        onClick={resendOTP}
+        >
+            {timeLeft > 0 ? `Resend OTP in ${timeLeft}s` : "Resend OTP"}
         </button>
       </div>
     </div>
