@@ -1,14 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MFA() {
+  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
 
   async function handleVerifyOTP() {
     const response = await fetch("/api/mfa", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ otp }),
+      body: JSON.stringify({ email, otp }),
     });
 
     const data = await response.json();

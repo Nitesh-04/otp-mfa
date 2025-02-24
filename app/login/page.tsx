@@ -19,7 +19,7 @@ export default function Login() {
 
     const data = await response.json();
     if (data.success) {
-      alert("Login successful! Redirecting to MFA...");
+      localStorage.setItem("userEmail", email);
       window.location.href = "/mfa";
     } else {
       alert(data.message || "Login failed");

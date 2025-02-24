@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { findUser } from "../../actions/findUser";
+import redis from "@/lib/redis";
 import nodemailer from "nodemailer";
+
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -27,6 +29,8 @@ export async function POST(req: Request) {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await redis.set(`otp:${email}`, otp, "EX", 180);
 
     await transporter.sendMail({
       from: process.env.MAIL_USER,
