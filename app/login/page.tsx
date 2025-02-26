@@ -4,6 +4,7 @@ import { useState } from "react";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleLogin() {
     if (!email || !password) {
@@ -22,7 +23,7 @@ export default function Login() {
       localStorage.setItem("userEmail", email);
       window.location.href = "/mfa";
     } else {
-      alert(data.message || "Login failed");
+      setError(data.message || "Error logging in");
     }
   }
 
@@ -32,6 +33,7 @@ export default function Login() {
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome Back!</h2>
         <input
           type="email"
+          required
           placeholder="Enter your email"
           className="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={email}
@@ -39,6 +41,7 @@ export default function Login() {
         />
         <input
           type="password"
+          required
           placeholder="Enter your password"
           className="w-full px-4 py-2 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={password}
@@ -50,6 +53,25 @@ export default function Login() {
         >
           Login
         </button>
+
+        <p className="text-red-500 text-center mt-5">{error}</p>
+
+        <div className="flex items-center justify-between mt-5">
+          <button
+            onClick={handleLogin}
+            className="w-1/4 px-2 py-2 bg-blue-300 text-white rounded-xl font-semibold hover:bg-blue-600 transition"
+          >
+            Sign Up
+          </button>
+
+          <button
+            onClick={handleLogin}
+            className="w-1/3 px-2 py-2 bg-blue-300 text-white rounded-xl font-semibold hover:bg-blue-600 transition"
+          >
+            Forgot Password
+          </button>
+        </div>
+
       </div>
     </div>
   );

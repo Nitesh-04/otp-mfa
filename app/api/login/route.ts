@@ -16,12 +16,12 @@ export async function POST(req: Request) {
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return NextResponse.json({ success: false, message: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Invalid password" }, { status: 401 });
     }
 
     generateOtp(email);
 
-    return NextResponse.json({ success: true, message: "Login successful! Redirecting to MFA..." });
+    return NextResponse.json({ success: true, message: "Logged in successfully" });
 
   } catch (error) {
     console.error(error);
