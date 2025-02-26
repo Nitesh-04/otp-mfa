@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { generateOtp } from "../api/_actions/actions";
 
 export default function MFA() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [timeLeft, setTimeLeft] = useState(180);
+  const [recieveEnable, setRecieveEnable] = useState(false);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
@@ -18,12 +20,18 @@ export default function MFA() {
   }, []);
 
   async function resendOTP() {
-    if (timeLeft === 0) {
-      await fetch("/api/resend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+    if (timeLeft === 0 || !recieveEnable) {
+      try {
+          await fetch("/api/resend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          });
+          alert("OTP sent!");
+          setRecieveEnable(true);
+      } catch (error) {
+          console.error(error);
+      }
       setTimeLeft(180);
     }
   }
@@ -46,7 +54,7 @@ export default function MFA() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="p-8 bg-white rounded-2xl shadow-lg text-center">
+      <div className="p-8 bg-white rounded-2xl shadow-lg text-center w-1/2">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Enter OTP</h2>
         <input
           type="text"
@@ -68,6 +76,13 @@ export default function MFA() {
         onClick={resendOTP}
         >
             {timeLeft > 0 ? `Resend OTP in ${timeLeft}s` : "Resend OTP"}
+        </button>
+        <button
+        className="mt-4 ml-10 px-6 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300"
+        disabled={recieveEnable}
+        onClick={resendOTP}
+        >
+            Didnt receive OTP?
         </button>
       </div>
     </div>

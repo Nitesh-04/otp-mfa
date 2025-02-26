@@ -16,8 +16,10 @@ export async function POST(req: Request) {
     }
 
     if (storedOtp !== otp) {
+      await redis.del(`otp:${email}`);
+
       return NextResponse.json(
-        { success: false, message: "Invalid OTP" },
+        { success: false, message: "Invalid OTP, new OTP resent" },
         { status: 400 }
       );
     }
