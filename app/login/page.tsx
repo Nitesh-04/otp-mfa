@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Login() {
@@ -58,17 +59,15 @@ export default function Login() {
 
         <div className="flex items-center justify-between mt-5">
           <button
-            onClick={handleLogin}
             className="w-1/4 px-2 py-2 bg-blue-300 text-white rounded-xl font-semibold hover:bg-blue-600 transition"
-          >
-            Sign Up
+          > 
+            <Link href="/signup">Sign Up</Link>
           </button>
 
           <button
-            onClick={handleLogin}
             className="w-1/3 px-2 py-2 bg-blue-300 text-white rounded-xl font-semibold hover:bg-blue-600 transition"
-          >
-            Forgot Password
+          > 
+            <Link href="/forgot">Forgot Password</Link>
           </button>
         </div>
 

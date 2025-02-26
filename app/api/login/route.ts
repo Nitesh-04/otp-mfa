@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Invalid password" }, { status: 401 });
     }
 
-    generateOtp(email);
+    await generateOtp(email);
 
     return NextResponse.json({ success: true, message: "Logged in successfully" });
 
