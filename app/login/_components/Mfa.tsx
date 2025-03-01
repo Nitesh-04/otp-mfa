@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { generateOtp } from "../api/_actions/actions";
 
 export default function MFA() {
   const [email, setEmail] = useState("");

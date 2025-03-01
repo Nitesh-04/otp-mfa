@@ -22,7 +22,7 @@ export default function Login() {
     const data = await response.json();
     if (data.success) {
       localStorage.setItem("userEmail", email);
-      window.location.href = "/mfa";
+      window.location.href = "/login/mfa";
     } else {
       setError(data.message || "Error logging in");
     }
