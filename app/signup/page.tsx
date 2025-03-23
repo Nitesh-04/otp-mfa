@@ -68,7 +68,7 @@ export default function Login() {
     const data = await response.json();
     if (data.success) {
       localStorage.setItem("userEmail", email);
-      window.location.href = "/dashboard";
+      window.location.href = "/login";
     } else {
       setError(data.message || "Error logging in");
     }
