@@ -13,7 +13,7 @@ export default function Home()
 
     return (
         <>
-            <p>Hi ${email}</p>
+            <p>Hi {email}</p>
         </>
     )
 }

@@ -12,7 +12,16 @@ const transporter = nodemailer.createTransport({
 export async function generateOtp(email: string)
 {
     try {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+        const length = 8;
+        let otp = '';
+        
+        while (otp.length < length) {
+            const byte = new Uint32Array(1);
+            crypto.getRandomValues(byte);
+            const index = byte[0] % chars.length;
+            otp += chars[index];
+        }
 
         await redis.set(`otp:${email}`, otp, "EX", 180);
 
