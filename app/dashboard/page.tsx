@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home()
@@ -14,6 +15,7 @@ export default function Home()
     return (
         <>
             <p>Hi {email}</p>
+            <p><Link href={"/login"}>Sign Out</Link></p>
         </>
     )
 }
